@@ -1,4 +1,5 @@
-import type { Portrait } from "@/data/portraits";
+import Image from "next/image";
+import type { Portrait } from "@/lib/types";
 
 const colourMap: Record<string, string> = {
   "sage-100": "bg-sage-100",
@@ -12,16 +13,28 @@ export default function PortraitCard({ portrait }: { portrait: Portrait }) {
 
   return (
     <div className="group flex-shrink-0 w-[280px] cursor-pointer">
-      {/* Photo placeholder */}
+      {/* Photo area */}
       <div
         className={`${bgClass} relative flex h-[340px] items-center justify-center overflow-hidden rounded-sm`}
       >
-        <span className="absolute top-4 left-4 font-serif text-6xl font-bold text-charcoal/10">
-          {String(portrait.id).padStart(2, "0")}
-        </span>
-        <span className="font-sans text-xs font-medium uppercase tracking-wider text-charcoal/30">
-          Photo placeholder
-        </span>
+        {portrait.image ? (
+          <Image
+            src={portrait.image}
+            alt={portrait.name}
+            fill
+            className="object-cover"
+            sizes="280px"
+          />
+        ) : (
+          <>
+            <span className="absolute top-4 left-4 font-serif text-6xl font-bold text-charcoal/10">
+              {String(portrait.id).padStart(2, "0")}
+            </span>
+            <span className="font-sans text-xs font-medium uppercase tracking-wider text-charcoal/30">
+              Photo placeholder
+            </span>
+          </>
+        )}
         {/* Hover arrow */}
         <div className="absolute right-4 bottom-4 flex h-8 w-8 items-center justify-center rounded-full bg-charcoal/10 opacity-0 transition-opacity group-hover:opacity-100">
           <svg

@@ -1,29 +1,39 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
-import { portraits } from "@/data/portraits";
+import type { Portrait } from "@/lib/types";
 import PortraitCard from "./PortraitCard";
 import PolicyTags from "./PolicyTags";
 import SectionLabel from "./ui/SectionLabel";
 import DotPagination from "./ui/DotPagination";
 
 const CARDS_PER_PAGE = 4;
-const totalPages = Math.ceil(portraits.length / CARDS_PER_PAGE);
 
-export default function PortraitsSection() {
+export default function PortraitsSection({
+  portraits,
+}: {
+  portraits: Portrait[];
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
+  const totalPages = useMemo(
+    () => Math.ceil(portraits.length / CARDS_PER_PAGE),
+    [portraits.length]
+  );
 
-  const scrollTo = useCallback((pageIndex: number) => {
-    if (!scrollRef.current) return;
-    const cardWidth = 280 + 24; // card width + gap
-    scrollRef.current.scrollTo({
-      left: pageIndex * CARDS_PER_PAGE * cardWidth,
-      behavior: "smooth",
-    });
-    setPage(pageIndex);
-  }, []);
+  const scrollTo = useCallback(
+    (pageIndex: number) => {
+      if (!scrollRef.current) return;
+      const cardWidth = 280 + 24;
+      scrollRef.current.scrollTo({
+        left: pageIndex * CARDS_PER_PAGE * cardWidth,
+        behavior: "smooth",
+      });
+      setPage(pageIndex);
+    },
+    []
+  );
 
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return;
@@ -32,7 +42,7 @@ export default function PortraitsSection() {
       scrollRef.current.scrollLeft / (CARDS_PER_PAGE * cardWidth)
     );
     setPage(Math.min(newPage, totalPages - 1));
-  }, []);
+  }, [totalPages]);
 
   const prev = () => scrollTo(Math.max(0, page - 1));
   const next = () => scrollTo(Math.min(totalPages - 1, page + 1));
@@ -47,6 +57,11 @@ export default function PortraitsSection() {
       });
     }
   };
+
+  const policies = useMemo(
+    () => Array.from(new Set(portraits.map((p) => p.policyLabel))),
+    [portraits]
+  );
 
   return (
     <section id="portraits" className="bg-white py-16 md:py-24">
@@ -67,7 +82,6 @@ export default function PortraitsSection() {
             </h2>
           </div>
           <div className="flex items-center gap-3">
-            {/* Arrow buttons */}
             <button
               onClick={prev}
               aria-label="Previous portraits"
@@ -114,7 +128,7 @@ export default function PortraitsSection() {
 
         {/* Policy tags */}
         <div className="mt-10">
-          <PolicyTags onTagClick={handleTagClick} />
+          <PolicyTags policies={policies} onTagClick={handleTagClick} />
         </div>
       </motion.div>
     </section>

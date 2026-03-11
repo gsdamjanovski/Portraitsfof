@@ -1,19 +1,15 @@
 "use client";
 
-import { portraits } from "@/data/portraits";
-
-const uniquePolicies = Array.from(
-  new Map(portraits.map((p) => [p.policyLabel, p.id])).keys()
-);
-
 export default function PolicyTags({
+  policies,
   onTagClick,
 }: {
+  policies: string[];
   onTagClick?: (policyLabel: string) => void;
 }) {
   return (
     <div className="flex flex-wrap gap-2">
-      {uniquePolicies.map((label) => (
+      {policies.map((label) => (
         <button
           key={label}
           onClick={() => onTagClick?.(label)}

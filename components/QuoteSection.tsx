@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import QuoteCarousel from "./QuoteCarousel";
 import InTheirWords from "./InTheirWords";
+import type { Quote } from "@/lib/types";
 
-export default function QuoteSection() {
+export default function QuoteSection({ quotes }: { quotes: Quote[] }) {
   return (
     <section id="collection" className="overflow-hidden">
       <div className="grid lg:grid-cols-[55%_45%]">
@@ -16,7 +17,7 @@ export default function QuoteSection() {
           transition={{ duration: 0.6 }}
           className="bg-cream px-6 py-16 md:px-12 md:py-24 lg:px-16"
         >
-          <QuoteCarousel />
+          <QuoteCarousel quotes={quotes} />
         </motion.div>
 
         {/* Right — white background with editorial text */}

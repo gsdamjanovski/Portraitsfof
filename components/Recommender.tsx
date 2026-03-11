@@ -2,11 +2,21 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { quizQuestions, getRecommendations } from "@/data/recommender";
-import { portraits } from "@/data/portraits";
+import type { Portrait, QuizQuestion, RecommenderMapping } from "@/lib/types";
+import { getRecommendations } from "@/lib/data";
 import SectionLabel from "./ui/SectionLabel";
 
-export default function Recommender() {
+interface RecommenderProps {
+  portraits: Portrait[];
+  quizQuestions: QuizQuestion[];
+  mappings: RecommenderMapping[];
+}
+
+export default function Recommender({
+  portraits,
+  quizQuestions,
+  mappings,
+}: RecommenderProps) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const [result, setResult] = useState<string[] | null>(null);
@@ -18,8 +28,7 @@ export default function Recommender() {
     if (step < quizQuestions.length - 1) {
       setStep(step + 1);
     } else {
-      // Calculate results using perspective (q2) and issue (q3)
-      const slugs = getRecommendations(newAnswers[1], newAnswers[2]);
+      const slugs = getRecommendations(mappings, newAnswers[1], newAnswers[2]);
       setResult(slugs);
     }
   };

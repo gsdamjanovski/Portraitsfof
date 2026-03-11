@@ -2,16 +2,16 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { quotes } from "@/data/quotes";
+import type { Quote } from "@/lib/types";
 import DotPagination from "./ui/DotPagination";
 
-export default function QuoteCarousel() {
+export default function QuoteCarousel({ quotes }: { quotes: Quote[] }) {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(true);
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % quotes.length);
-  }, []);
+  }, [quotes.length]);
 
   useEffect(() => {
     if (!playing) return;
@@ -20,6 +20,7 @@ export default function QuoteCarousel() {
   }, [playing, next]);
 
   const q = quotes[current];
+  if (!q) return null;
 
   return (
     <div className="flex h-full flex-col justify-between">
