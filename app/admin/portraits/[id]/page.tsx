@@ -44,7 +44,14 @@ export default function EditPortrait() {
         method: "POST",
         body: formData,
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        setMessage(`Upload failed (${res.status}): ${text.slice(0, 200)}`);
+        return;
+      }
       if (!res.ok) {
         setMessage(`Upload failed: ${data.error || res.statusText}`);
         return;
