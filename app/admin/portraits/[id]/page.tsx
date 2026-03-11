@@ -44,12 +44,16 @@ export default function EditPortrait() {
         method: "POST",
         body: formData,
       });
-      const { url } = await res.json();
-      updateField("image", url);
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage(`Upload failed: ${data.error || res.statusText}`);
+        return;
+      }
+      updateField("image", data.url);
       setMessage("Image uploaded");
       setTimeout(() => setMessage(""), 2000);
-    } catch {
-      setMessage("Upload failed");
+    } catch (err) {
+      setMessage(`Upload failed: ${err instanceof Error ? err.message : "Network error"}`);
     } finally {
       setUploading(false);
     }
