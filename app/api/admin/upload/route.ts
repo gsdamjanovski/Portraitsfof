@@ -10,7 +10,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const blob = await put(`portraits/${file.name}`, file, {
+    // Read file into buffer to avoid streaming issues
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const blob = await put(`portraits/${file.name}`, buffer, {
       access: "public",
       contentType: file.type,
     });
