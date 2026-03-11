@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-charcoal: #1C1917;
+  --color-copper: #C2703E;
+  --color-cream: #F5F0EB;
+  --color-teal: #0C4A4A;
+  --color-muted: #9A9490;
+  --color-sage-100: #E8E0D8;
+  --color-lavender-100: #E8E0F0;
+  --color-mint-100: #D8EAE0;
+  --color-blush-100: #F0E0D8;
+
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-charcoal);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background-color: var(--color-copper);
+  color: white;
+}
+
+/* Hide scrollbars for carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
