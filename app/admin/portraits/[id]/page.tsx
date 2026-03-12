@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import { upload } from "@vercel/blob/client";
 import type { Portrait } from "@/lib/types";
 
 export default function EditPortrait() {
@@ -36,27 +37,13 @@ export default function EditPortrait() {
     if (!file) return;
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
 
     try {
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
+      const blob = await upload(`portraits/${file.name}`, file, {
+        access: "public",
+        handleUploadUrl: "/api/admin/upload",
       });
-      const text = await res.text();
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        setMessage(`Upload failed (${res.status}): ${text.slice(0, 200)}`);
-        return;
-      }
-      if (!res.ok) {
-        setMessage(`Upload failed: ${data.error || res.statusText}`);
-        return;
-      }
-      updateField("image", data.url);
+      updateField("image", blob.url);
       setMessage("Image uploaded");
       setTimeout(() => setMessage(""), 2000);
     } catch (err) {
