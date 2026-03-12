@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { readBlobJson, writeBlobJson } from "@/lib/blob";
 import { getSiteCopy } from "@/lib/data";
 import type { SiteCopy } from "@/lib/types";
@@ -12,6 +12,6 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   const copy: SiteCopy = await request.json();
   await writeBlobJson("site-copy.json", copy);
-  revalidateTag("site-copy", { expire: 0 });
+  revalidatePath("/");
   return NextResponse.json({ success: true });
 }

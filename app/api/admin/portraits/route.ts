@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { readBlobJson, writeBlobJson } from "@/lib/blob";
 import { portraits as defaultPortraits } from "@/data/portraits";
 import type { Portrait } from "@/lib/types";
@@ -15,6 +15,6 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   const portraits: Portrait[] = await request.json();
   await writeBlobJson("portraits.json", portraits);
-  revalidateTag("portraits", { expire: 0 });
+  revalidatePath("/");
   return NextResponse.json({ success: true });
 }
