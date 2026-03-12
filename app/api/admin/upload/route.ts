@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
             "image/heic",
           ],
           maximumSizeInBytes: 50 * 1024 * 1024, // 50MB
+          addRandomSuffix: true,
           tokenPayload: JSON.stringify({ pathname }),
         };
       },
