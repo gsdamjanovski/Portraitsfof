@@ -21,6 +21,7 @@ export async function writeBlobJson(key: string, data: unknown): Promise<string>
     access: "public",
     contentType: "application/json",
     addRandomSuffix: false,
+    allowOverwrite: true,
   });
   return blob.url;
 }
