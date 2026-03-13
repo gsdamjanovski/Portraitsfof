@@ -13,12 +13,20 @@ export async function GET() {
 }
 
 export async function PUT(request: NextRequest) {
-  const portraits: Portrait[] = await request.json();
-  await writeBlobJson("portraits.json", portraits);
-  revalidatePath("/");
-  revalidatePath("/the-portraits");
-  revalidatePath("/the-project");
-  revalidatePath("/the-team");
-  revalidatePath("/the-method");
-  return NextResponse.json({ success: true });
+  try {
+    const portraits: Portrait[] = await request.json();
+    console.log(`[portraits PUT] Saving ${portraits.length} portraits, payload size: ${JSON.stringify(portraits).length} bytes`);
+    await writeBlobJson("portraits.json", portraits);
+    console.log("[portraits PUT] writeBlobJson succeeded");
+    revalidatePath("/");
+    revalidatePath("/the-portraits");
+    revalidatePath("/the-project");
+    revalidatePath("/the-team");
+    revalidatePath("/the-method");
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[portraits PUT] Error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
