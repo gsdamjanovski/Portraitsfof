@@ -1,5 +1,6 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextRequest, NextResponse } from "next/server";
+import { verifyToken } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as HandleUploadBody;
@@ -9,7 +10,12 @@ export async function POST(request: NextRequest) {
       body,
       request,
       onBeforeGenerateToken: async (pathname) => {
-        // pathname is e.g. "portraits/photo.jpg"
+        // This phase is called by the client — verify auth
+        const token = request.cookies.get("admin-token")?.value;
+        if (!token || !(await verifyToken(token))) {
+          throw new Error("Unauthorized");
+        }
+
         return {
           allowedContentTypes: [
             "image/jpeg",
@@ -24,7 +30,7 @@ export async function POST(request: NextRequest) {
         };
       },
       onUploadCompleted: async () => {
-        // Could log or process after upload — not needed for now
+        // Called by Vercel servers (no cookie) — no auth needed here
       },
     });
 

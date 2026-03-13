@@ -63,15 +63,20 @@ export default function EditPortrait() {
     );
 
     try {
-      await fetch("/api/admin/portraits", {
+      const res = await fetch("/api/admin/portraits", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updated),
       });
+      if (!res.ok) {
+        const err = await res.text();
+        setMessage(`Save failed (${res.status}): ${err}`);
+        return;
+      }
       setMessage("Saved successfully");
       setTimeout(() => setMessage(""), 3000);
-    } catch {
-      setMessage("Save failed");
+    } catch (err) {
+      setMessage(`Save failed: ${err instanceof Error ? err.message : "Network error"}`);
     } finally {
       setSaving(false);
     }

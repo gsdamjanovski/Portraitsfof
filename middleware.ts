@@ -4,8 +4,12 @@ import { verifyToken } from "@/lib/auth";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow the login page and auth API without a token
-  if (pathname === "/admin/login" || pathname === "/api/admin/auth") {
+  // Allow the login page, auth API, and Vercel Blob upload callback without a token
+  if (
+    pathname === "/admin/login" ||
+    pathname === "/api/admin/auth" ||
+    pathname === "/api/admin/upload"
+  ) {
     return NextResponse.next();
   }
 
