@@ -16,5 +16,9 @@ export async function PUT(request: NextRequest) {
   const portraits: Portrait[] = await request.json();
   await writeBlobJson("portraits.json", portraits);
   revalidatePath("/");
+  revalidatePath("/the-portraits");
+  revalidatePath("/the-project");
+  revalidatePath("/the-team");
+  revalidatePath("/the-method");
   return NextResponse.json({ success: true });
 }
