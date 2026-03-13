@@ -12,15 +12,15 @@
   --color-divider: #DDDDDD;
   --color-admin-accent: #E42313;
 
-  /* Legacy colors kept for admin panel */
-  --color-charcoal: #1C1917;
-  --color-copper: #C2703E;
-  --color-cream: #F5F0EB;
-  --color-teal: #0C4A4A;
-  --color-sage-100: #E8E0D8;
-  --color-lavender-100: #E8E0F0;
-  --color-mint-100: #D8EAE0;
-  --color-blush-100: #F0E0D8;
+  /* ── Admin panel tokens ── */
+  --color-admin-red: #E42313;
+  --color-admin-bg: #FAFAFA;
+  --color-admin-card: #FFFFFF;
+  --color-admin-border: #E8E8E8;
+  --color-admin-text: #1A1A1A;
+  --color-admin-muted: #7A7A7A;
+  --color-admin-sidebar: #FFFFFF;
+  --font-admin: var(--font-space-grotesk);
 
   /* ── Typography ── */
   --font-heading: var(--font-dm-sans);
@@ -156,6 +156,68 @@ body {
 .section-dark {
   background-color: var(--color-black);
   color: var(--color-white);
+}
+
+/* ── Admin panel scoped styles ── */
+.admin-shell,
+.admin-shell * {
+  font-family: var(--font-admin), system-ui, sans-serif;
+}
+
+.admin-shell input,
+.admin-shell textarea,
+.admin-shell select {
+  font-family: var(--font-admin), system-ui, sans-serif;
+  border: 1px solid var(--color-admin-border);
+  background-color: var(--color-admin-card);
+  color: var(--color-admin-text);
+  font-size: 14px;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.admin-shell input:focus,
+.admin-shell textarea:focus,
+.admin-shell select:focus {
+  border-color: var(--color-admin-red);
+}
+
+.admin-card {
+  background-color: var(--color-admin-card);
+  border: 1px solid var(--color-admin-border);
+  padding: 24px;
+}
+
+.admin-btn-primary {
+  background-color: var(--color-admin-red);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 20px;
+  transition: opacity 0.15s;
+}
+
+.admin-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.admin-btn-primary:disabled {
+  opacity: 0.5;
+}
+
+.admin-btn-secondary {
+  border: 1px solid var(--color-admin-border);
+  background-color: var(--color-admin-card);
+  color: var(--color-admin-text);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 8px 20px;
+  transition: all 0.15s;
+}
+
+.admin-btn-secondary:hover {
+  border-color: var(--color-admin-text);
 }
 
 /* ── Hide scrollbars for carousels ── */

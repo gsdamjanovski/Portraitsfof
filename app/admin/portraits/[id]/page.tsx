@@ -80,7 +80,7 @@ export default function EditPortrait() {
   if (!portrait) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-copper border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--color-admin-red)] border-t-transparent" />
       </div>
     );
   }
@@ -89,23 +89,23 @@ export default function EditPortrait() {
     <div className="mx-auto max-w-2xl">
       <button
         onClick={() => router.push("/admin/portraits")}
-        className="mb-4 font-sans text-sm text-muted hover:text-charcoal"
+        className="mb-4 text-sm text-[var(--color-admin-muted)] hover:text-[var(--color-admin-text)]"
       >
-        &larr; Back to portraits
+        ← Back to portraits
       </button>
 
-      <h1 className="mb-6 font-serif text-2xl text-charcoal">
+      <h1 className="mb-6 text-2xl font-bold text-[var(--color-admin-text)]">
         Edit: {portrait.name}
       </h1>
 
       {/* Image upload */}
-      <div className="mb-6 rounded-md border border-muted/20 bg-white p-5">
-        <label className="mb-2 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+      <div className="admin-card mb-6">
+        <label className="mb-3 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
           Portrait photo
         </label>
         <div className="flex items-start gap-4">
           <div
-            className="h-28 w-28 shrink-0 overflow-hidden rounded-sm"
+            className="h-28 w-28 shrink-0 overflow-hidden"
             style={{ backgroundColor: portrait.cardColour }}
           >
             {portrait.image && (
@@ -119,7 +119,7 @@ export default function EditPortrait() {
             )}
           </div>
           <div>
-            <label className="inline-flex cursor-pointer items-center gap-2 rounded-sm bg-copper px-3 py-2 font-sans text-sm font-medium text-white transition-opacity hover:opacity-90">
+            <label className="admin-btn-primary inline-flex cursor-pointer items-center gap-2">
               {uploading ? "Uploading..." : "Upload photo"}
               <input
                 type="file"
@@ -130,7 +130,7 @@ export default function EditPortrait() {
               />
             </label>
             {portrait.image && (
-              <p className="mt-2 max-w-xs truncate font-sans text-xs text-muted">
+              <p className="mt-2 max-w-xs truncate text-xs text-[var(--color-admin-muted)]">
                 {portrait.image}
               </p>
             )}
@@ -139,73 +139,29 @@ export default function EditPortrait() {
       </div>
 
       {/* Form fields */}
-      <div className="space-y-4 rounded-md border border-muted/20 bg-white p-5">
-        <Field
-          label="Name"
-          value={portrait.name}
-          onChange={(v) => updateField("name", v)}
-        />
-        <Field
-          label="Age"
-          value={String(portrait.age)}
-          onChange={(v) => updateField("age", v)}
-        />
+      <div className="admin-card space-y-4">
+        <AdminField label="Name" value={portrait.name} onChange={(v) => updateField("name", v)} />
+        <AdminField label="Age" value={String(portrait.age)} onChange={(v) => updateField("age", v)} />
         <div className="grid grid-cols-2 gap-4">
-          <Field
-            label="Location"
-            value={portrait.location}
-            onChange={(v) => updateField("location", v)}
-          />
-          <Field
-            label="State"
-            value={portrait.state}
-            onChange={(v) => updateField("state", v)}
-          />
+          <AdminField label="Location" value={portrait.location} onChange={(v) => updateField("location", v)} />
+          <AdminField label="State" value={portrait.state} onChange={(v) => updateField("state", v)} />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <Field
-            label="Policy Area (slug)"
-            value={portrait.policyArea}
-            onChange={(v) => updateField("policyArea", v)}
-          />
-          <Field
-            label="Policy Label"
-            value={portrait.policyLabel}
-            onChange={(v) => updateField("policyLabel", v)}
-          />
+          <AdminField label="Policy Area (slug)" value={portrait.policyArea} onChange={(v) => updateField("policyArea", v)} />
+          <AdminField label="Policy Label" value={portrait.policyLabel} onChange={(v) => updateField("policyLabel", v)} />
         </div>
-        <Field
-          label="Card Colour"
-          value={portrait.cardColour}
-          onChange={(v) => updateField("cardColour", v)}
-        />
-        <TextArea
-          label="Quote"
-          value={portrait.quote}
-          onChange={(v) => updateField("quote", v)}
-          rows={3}
-        />
-        <TextArea
-          label="Summary"
-          value={portrait.summary}
-          onChange={(v) => updateField("summary", v)}
-          rows={4}
-        />
+        <AdminField label="Card Colour" value={portrait.cardColour} onChange={(v) => updateField("cardColour", v)} />
+        <AdminTextArea label="Quote" value={portrait.quote} onChange={(v) => updateField("quote", v)} rows={3} />
+        <AdminTextArea label="Summary" value={portrait.summary} onChange={(v) => updateField("summary", v)} rows={4} />
       </div>
 
       {/* Save */}
       <div className="mt-5 flex items-center gap-3">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="rounded-sm bg-copper px-5 py-2.5 font-sans text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
+        <button onClick={handleSave} disabled={saving} className="admin-btn-primary">
           {saving ? "Saving..." : "Save changes"}
         </button>
         {message && (
-          <p
-            className={`font-sans text-sm ${message.includes("fail") ? "text-red-600" : "text-teal"}`}
-          >
+          <p className={`text-sm ${message.includes("fail") ? "text-[var(--color-admin-red)]" : "text-emerald-600"}`}>
             {message}
           </p>
         )}
@@ -214,52 +170,24 @@ export default function EditPortrait() {
   );
 }
 
-function Field({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
+function AdminField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
         {label}
       </span>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none transition-colors focus:border-copper"
-      />
+      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className="w-full" />
     </label>
   );
 }
 
-function TextArea({
-  label,
-  value,
-  onChange,
-  rows = 3,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  rows?: number;
-}) {
+function AdminTextArea({ label, value, onChange, rows = 3 }: { label: string; value: string; onChange: (v: string) => void; rows?: number }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
         {label}
       </span>
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        rows={rows}
-        className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none transition-colors focus:border-copper"
-      />
+      <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={rows} className="w-full" />
     </label>
   );
 }

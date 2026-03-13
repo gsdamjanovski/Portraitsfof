@@ -62,7 +62,7 @@ export default function QuotesAdmin() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-copper border-t-transparent" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--color-admin-red)] border-t-transparent" />
       </div>
     );
   }
@@ -70,101 +70,100 @@ export default function QuotesAdmin() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-serif text-2xl text-charcoal">Quotes</h1>
-        <button
-          onClick={addQuote}
-          className="rounded-sm bg-copper px-3 py-1.5 font-sans text-sm font-medium text-white transition-opacity hover:opacity-90"
-        >
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--color-admin-text)]">Quotes</h1>
+          <p className="mt-1 text-sm text-[var(--color-admin-muted)]">
+            {quotes.length} quotes for the homepage rotator
+          </p>
+        </div>
+        <button onClick={addQuote} className="admin-btn-primary">
           + Add quote
         </button>
       </div>
 
       <div className="space-y-4">
         {quotes.map((q, i) => (
-          <div
-            key={i}
-            className="rounded-md border border-muted/20 bg-white p-5"
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <span className="font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+          <div key={i} className="admin-card">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                 Quote {i + 1}
               </span>
               <button
                 onClick={() => removeQuote(i)}
-                className="font-sans text-xs text-red-400 hover:text-red-600"
+                className="text-xs text-[var(--color-admin-red)] hover:opacity-70"
               >
                 Remove
               </button>
             </div>
 
             <label className="mb-3 block">
-              <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                 Quote text
               </span>
               <textarea
                 value={q.text}
                 onChange={(e) => updateQuote(i, "text", e.target.value)}
                 rows={3}
-                className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                className="w-full"
               />
             </label>
 
             <div className="grid grid-cols-2 gap-3">
               <label className="block">
-                <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                   Name
                 </span>
                 <input
                   type="text"
                   value={q.name}
                   onChange={(e) => updateQuote(i, "name", e.target.value)}
-                  className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                  className="w-full"
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                   Age
                 </span>
                 <input
                   type="text"
                   value={String(q.age)}
                   onChange={(e) => updateQuote(i, "age", e.target.value)}
-                  className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                  className="w-full"
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                   Location
                 </span>
                 <input
                   type="text"
                   value={q.location}
                   onChange={(e) => updateQuote(i, "location", e.target.value)}
-                  className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                  className="w-full"
                 />
               </label>
               <label className="block">
-                <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+                <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                   State
                 </span>
                 <input
                   type="text"
                   value={q.state}
                   onChange={(e) => updateQuote(i, "state", e.target.value)}
-                  className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                  className="w-full"
                 />
               </label>
             </div>
 
             <label className="mt-3 block">
-              <span className="mb-1 block font-sans text-xs font-semibold uppercase tracking-wider text-muted">
+              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[var(--color-admin-muted)]">
                 Policy Area
               </span>
               <input
                 type="text"
                 value={q.policyArea}
                 onChange={(e) => updateQuote(i, "policyArea", e.target.value)}
-                className="w-full rounded-sm border border-muted/30 bg-cream/40 px-3 py-2 font-sans text-sm text-charcoal outline-none focus:border-copper"
+                className="w-full"
               />
             </label>
           </div>
@@ -173,17 +172,11 @@ export default function QuotesAdmin() {
 
       {/* Save */}
       <div className="mt-5 flex items-center gap-3">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="rounded-sm bg-copper px-5 py-2.5 font-sans text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
+        <button onClick={handleSave} disabled={saving} className="admin-btn-primary">
           {saving ? "Saving..." : "Save all quotes"}
         </button>
         {message && (
-          <p
-            className={`font-sans text-sm ${message.includes("fail") ? "text-red-600" : "text-teal"}`}
-          >
+          <p className={`text-sm ${message.includes("fail") ? "text-[var(--color-admin-red)]" : "text-emerald-600"}`}>
             {message}
           </p>
         )}
